@@ -15,8 +15,8 @@
 
 # define _DEFAULT_SOURCE
 
-#include <stdio.h> // ------------------ RETIRAR DEPOIS!!! -----------
-#include "ft_printf.h"
+
+#include "../lib/ft_printf.h"
 #include "libft.h"
 #include <signal.h>
 #include <unistd.h>
