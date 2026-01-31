@@ -23,6 +23,8 @@ RM = rm -rf
 
 SRC_DIR = src
 OBJ_DIR = obj
+LIBFT_DIR = lib/libft
+FTPRINTF_DIR = lib/ft_printf
 
 #!-------SOURCE FILES-------!
 
@@ -42,13 +44,20 @@ DEPS = $(CLIENT_OBJS:.o=.d) $(SERVER_OBJS:.o=.d)
 
 all: $(CLIENT) $(SERVER)
 
-$(CLIENT): $(CLIENT_OBJS)
-	@$(CC) $(CLIENT_OBJS) -o $@
-	@echo -e "$(GREEN) $@ compiled successfully!$(RESET)"
+$(CLIENT): $(CLIENT_OBJS) $(LIBFT_DIR)/libft.a $(FTPRINTF_DIR)/libftprintf.a
+	$(CC) $(CLIENT_OBJS) \
+		-L$(LIBFT_DIR) -lft \
+		-L$(FTPRINTF_DIR) -lftprintf \
+		-o $@
+	@echo -e "$(GREEN)$@ compiled successfully!$(RESET)"
 
-$(SERVER): $(SERVER_OBJS)
-	@$(CC) $(SERVER_OBJS) -o $@
-	@echo -e "$(GREEN) $@ compiled successfully!$(RESET)"
+
+$(SERVER): $(SERVER_OBJS) $(LIBFT_DIR)/libft.a $(FTPRINTF_DIR)/libftprintf.a
+	$(CC) $(SERVER_OBJS) \
+		-L$(LIBFT_DIR) -lft \
+		-L$(FTPRINTF_DIR) -lftprintf \
+		-o $@
+	@echo -e "$(GREEN)$@ compiled successfully!$(RESET)"
 
 -include $(DEPS)
 
@@ -57,14 +66,24 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo -e "$(YELLOW)Compiling $<...$(RESET)"
 	@$(CC) $(CCFLAGS) $(DEPFLAGS) -c $< -o $@
 
+$(LIBFT_DIR)/libft.a:
+	@$(MAKE) -s -C $(LIBFT_DIR)
+
+$(FTPRINTF_DIR)/libftprintf.a:
+	@$(MAKE) -s -C $(FTPRINTF_DIR)
+
 #!-------CLEANING-------!
 
 clean:
 	@$(RM) $(OBJ_DIR)
+	@make clean -s -C $(LIBFT_DIR)
+	@make clean -s -C $(FTPRINTF_DIR)
 	@echo -e "$(ORANGE)Files cleaned!$(RESET)"
 
 fclean: clean
 	@$(RM) $(CLIENT) $(SERVER)
+	@make fclean -s -C $(LIBFT_DIR)
+	@make fclean -s -C $(FTPRINTF_DIR)
 	@echo -e "$(ORANGE)Full clean completed!$(RESET)"
 
 re: fclean all

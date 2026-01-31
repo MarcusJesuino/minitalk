@@ -12,13 +12,14 @@
 
 #include "../include/minitalk.h"
 
-static void decode_signal(int sig, siginfo_t *info, void *ucontext)
+static void	decode_signal(int sig, siginfo_t *info, void *context)
 {
-	static int bits;
-	static unsigned char current_c;
-	static unsigned int bit_count;
+	static unsigned char	current_c;
+	static unsigned int		bit_count;
+	static int				bits;
 
-	if (sig == SIGUSR1)
+	(void)context;
+	if (sig == SIGUSR2)
 		bits = 0;
 	else
 		bits = 1;
@@ -33,10 +34,10 @@ static void decode_signal(int sig, siginfo_t *info, void *ucontext)
 	kill(info->si_pid, SIGUSR1);
 }
 
-int main(void)
+int	main(void)
 {
-	pid_t pid;
-	struct sigaction actions;
+	struct sigaction	actions;
+	pid_t				pid;
 
 	pid = getpid();
 	sigemptyset(&actions.sa_mask);
@@ -45,6 +46,6 @@ int main(void)
 	sigaction(SIGUSR1, &actions, NULL);
 	sigaction(SIGUSR2, &actions, NULL);
 	ft_printf("Server PID: %d\n", pid);
-	while(1)
+	while (1)
 		pause();
 }

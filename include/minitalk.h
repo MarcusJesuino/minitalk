@@ -13,13 +13,10 @@
 #ifndef MINITALK_H
 # define MINITALK_H
 
-# define _DEFAULT_SOURCE
-
-
-#include "../lib/ft_printf.h"
-#include "libft.h"
-#include <signal.h>
-#include <unistd.h>
-#include <stdlib.h>
+# include <signal.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include "../lib/ft_printf/ft_printf.h"
+# include "../lib/libft/libft.h"
 
 #endif
